@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const adminService = require('../services/adminService');
+const { adminService } = require('../services');
 const utils = require('../misc/utils');
 const { asyncHandler } = require('../middlewares');
 const router = Router();
@@ -29,7 +29,6 @@ router.get(
   asyncHandler(async (req, res, next) => {
     const { id } = req.params;
     const product = await adminService.getProduct(id);
-    console.log(product);
     res.json(utils.buildResponse(product));
   })
 );
