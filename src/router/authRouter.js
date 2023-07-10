@@ -13,7 +13,7 @@ router.post("/login", [validator.loginCheck, validator.validatorError], asyncHan
 
 router.post("/register", [validator.registerCheck, validator.validatorError], asyncHandler(async (req, res, next) => {
   const { id, pw, name, email, phone } = req.body;
-  const newUser = await userService.addUser({
+  const newUser = await userService.postUser({
     id,
     pw,
     name,
@@ -42,13 +42,13 @@ router.put("/logout", async (req, res, next) => {
 
 router.post("/search-id", [validator.emailCheck, validator.validatorError], asyncHandler(async (req, res, next) => {
   const { email } = req.body;
-  const userId = await userService.findingId(email);
+  const userId = await userService.getId(email);
   res.json(buildResponse(userId));
 }));
 
 router.patch("/reset-pw", [validator.resetpwCheck, validator.validatorError], asyncHandler(async (req, res, next) => {
   const { id, email } = req.body;
-  const resetPw = await userService.resetPW({ id, email });
+  const resetPw = await userService.postPW({ id, email });
   const mailOptions = {
     from: "kimsungjin927@gmail.com",
     to: email,
@@ -68,7 +68,7 @@ router.patch("/reset-pw", [validator.resetpwCheck, validator.validatorError], as
 router.put("/me", isAuthenticated, [validator.meCheck, validator.validatorError], asyncHandler(async (req, res, next) => {
   const { address, pw } = req.body;
   const userId = req.userId;
-  const editUser = await userService.editUser({
+  const editUser = await userService.postUser({
     userId,
     address,
     pw,
